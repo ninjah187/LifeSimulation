@@ -28,7 +28,14 @@ namespace LifeSimulation.Core
 
             _objects = new List<IGameObject>
             {
-                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector))
+                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
+                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
+                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
+                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
+                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
+                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
+                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
+                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
             };
 
             for (int i = 0; i < 100; i++)
@@ -37,7 +44,7 @@ namespace LifeSimulation.Core
                 {
                     X = Random.Next(5, (int) _environment.Width - 5),
                     Y = Random.Next(5, (int) _environment.Height - 5)
-                }));
+                }, new CircleHitBox(), new CircleHitBoxCollisionDetector(_objects.OfType<IOrganism>().Select(o => o.Mover.HitBox))));
             }
 
             //_organisms = new List<IOrganism>
@@ -46,6 +53,31 @@ namespace LifeSimulation.Core
             //};
         }
         
+        //public void Update()
+        //{
+        //    var dying = new List<IOrganism>();
+
+        //    var _organisms = _objects.OfType<IOrganism>();
+
+        //    foreach (var organism in _organisms)
+        //    {
+        //        if (organism.Energy <= 0)
+        //        {
+        //            dying.Add(organism);
+        //            continue;
+        //        }
+
+        //        organism.Update();
+        //    }
+
+        //    foreach (var organism in dying)
+        //    {
+        //        //_organisms.Remove(organism);
+        //        _objects.Remove(organism);
+        //        RemoveOrganismFromGameCanvas(organism);
+        //    }
+        //}
+
         public void Update()
         {
             var dying = new List<IOrganism>();
@@ -59,8 +91,6 @@ namespace LifeSimulation.Core
                     dying.Add(organism);
                     continue;
                 }
-
-                organism.Update();
             }
 
             foreach (var organism in dying)
@@ -68,6 +98,11 @@ namespace LifeSimulation.Core
                 //_organisms.Remove(organism);
                 _objects.Remove(organism);
                 RemoveOrganismFromGameCanvas(organism);
+            }
+
+            foreach (var obj in _objects)
+            {
+                obj.Update();
             }
         }
 

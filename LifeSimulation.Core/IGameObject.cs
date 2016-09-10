@@ -10,5 +10,7 @@ namespace LifeSimulation.Core
     {
         Point Position { get; set; }
         double Size { get; set; }
+
+        void Update();
     }
 }

@@ -10,6 +10,8 @@ namespace LifeSimulation.Core
     {
         Vector Direction { get; }
 
+        ICircleHitBox HitBox { get; }
+
         void ApplyForce(Vector force);
         void Move(IGameObject gameObject);
     }

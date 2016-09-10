@@ -45,11 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CircleHitBox.cs" />
+    <Compile Include="CircleHitBoxCollisionDetector.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Environment.cs" />
     <Compile Include="Food.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="ICircleHitBox.cs" />
+    <Compile Include="ICircleHitBoxCollisionDetector.cs" />
     <Compile Include="IEnergyComponent.cs" />
     <Compile Include="IEngine.cs" />
     <Compile Include="IEnvironment.cs" />

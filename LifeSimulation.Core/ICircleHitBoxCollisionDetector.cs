@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace LifeSimulation.Core
 {
-    public interface ICircleHitBox
+    public interface ICircleHitBoxCollisionDetector
     {
-        Point Center { get; set; }
-        double Radius { get; set; }
-
-        void Update(Point topLeft, double size);
         bool Collides(ICircleHitBox hitBox);
     }
 }

@@ -28,5 +28,9 @@ namespace LifeSimulation.Core
             Position = position;
             Size = size;
         }
+
+        public virtual void Update()
+        {
+        }
     }
 }

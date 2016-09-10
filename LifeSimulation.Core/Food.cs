@@ -8,9 +8,24 @@ namespace LifeSimulation.Core
 {
     public class Food : GameObject, IFood
     {
-        public Food(Point position)
+        ICircleHitBox _hitBox;
+        ICircleHitBoxCollisionDetector _organismCollisions;
+
+        public Food(Point position, ICircleHitBox hitBox, ICircleHitBoxCollisionDetector organismCollisions)
             : base(position, 5)
         {
+            _hitBox = hitBox;
+            _organismCollisions = organismCollisions;
+
+            _hitBox.Update(Position, Size);
+        }
+
+        public override void Update()
+        {
+            if (_organismCollisions.Collides(_hitBox))
+            {
+                Console.WriteLine("> food collision");
+            }
         }
     }
 }

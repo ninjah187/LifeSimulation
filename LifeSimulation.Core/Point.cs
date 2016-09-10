@@ -32,5 +32,19 @@ namespace LifeSimulation.Core
                 X = point.X - vector.X,
                 Y = point.Y - vector.Y
             };
+
+        public static Vector operator +(Point point, Point point2)
+            => new Vector
+            {
+                X = point.X + point2.X,
+                Y = point.Y + point2.Y
+            };
+
+        public static Vector operator -(Point point, Point point2)
+            => new Vector
+            {
+                X = point.X - point2.X,
+                Y = point.Y - point2.Y
+            };
     }
 }

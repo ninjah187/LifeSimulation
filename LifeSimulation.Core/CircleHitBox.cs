@@ -21,5 +21,8 @@ namespace LifeSimulation.Core
                 Y = topLeft.Y + Radius
             };
         }
+
+        public bool Collides(ICircleHitBox hitBox)
+            => (hitBox.Center - Center).Length < hitBox.Radius + Radius;
     }
 }

@@ -30,13 +30,13 @@ namespace LifeSimulation.Core
             Energy = 100;
         }
 
-        public void Update()
+        public override void Update()
         {
             Mover.Move(this);
 
             if (!Mover.Direction.Equals(default(Vector)))
             {
-                Energy -= 0.1;
+                //Energy -= 0.1;
             }
         }
     }
