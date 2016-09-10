@@ -16,5 +16,11 @@ namespace LifeSimulation.Core
 
         public double X { get; set; }
         public double Y { get; set; }
+
+        //public static bool operator ==(Vector v, Vector v2)
+        //    => v.X == v2.X && v.Y == v2.Y;
+
+        //public static bool operator !=(Vector v, Vector v2)
+        //    => v.X != v2.X && v.Y != v2.Y;
     }
 }

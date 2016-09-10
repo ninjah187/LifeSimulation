@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DotNetNinja.TypeFiltering;
 using LifeSimulation.Core;
 using Environment = LifeSimulation.Core.Environment;
 
@@ -34,13 +35,43 @@ namespace LifeSimulation.Wpf
                     Height = GameCanvas.ActualHeight
                 };
 
+                var engine = new Engine(environment);
+                engine.AddObjectToGameCanvas = gameObject =>
+                {
+                    gameObject
+                        .When<IOrganism>(o => AddOrganismToCanvas(o))
+                        .BreakIfRecognized()
+                        .When<IFood>(f => AddFoodToCanvas(f));
+                };
+                engine.AddOrganismToGameCanvas = AddOrganismToCanvas;
+                engine.RemoveOrganismFromGameCanvas = RemoveOrganismFromCanvas;
+
+                engine.RunAsync();
+
                 // bugged. gives NaN for both values. but idea is good.
                 //environment
                 //    .SetSizeBinding(nameof(Environment.Width), this, WidthProperty)
                 //    .SetSizeBinding(nameof(Environment.Height), this, HeightProperty);
-
-                DataContext = new MainViewModel(environment);
             };
+        }
+
+        public void AddOrganismToCanvas(IOrganism organism)
+        {
+            GameCanvas.Children.Add(new OrganismControl(organism));
+        }
+
+        public void RemoveOrganismFromCanvas(IOrganism organism)
+        {
+            var control = GameCanvas.Children
+                        .OfType<OrganismControl>()
+                        .Single(c => c.Organism == organism);
+
+            GameCanvas.Children.Remove(control);
+        }
+
+        public void AddFoodToCanvas(IFood food)
+        {
+            GameCanvas.Children.Add(new FoodControl(food));
         }
     }
 }

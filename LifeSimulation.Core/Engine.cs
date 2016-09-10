@@ -9,23 +9,80 @@ namespace LifeSimulation.Core
 {
     public class Engine : IEngine
     {
-        protected IMover[] Movers { get; }
+        static Random Random { get; } = new Random();
 
-        public Engine(params IMover[] movers)
+        public Action<IGameObject> AddObjectToGameCanvas { get; set; }
+        public Action<IOrganism> AddOrganismToGameCanvas { get; set; }
+        public Action<IOrganism> RemoveOrganismFromGameCanvas { get; set; }
+
+        //List<IOrganism> _organisms;
+        List<IGameObject> _objects;
+
+        IEnvironment _environment;
+        IMapCollisionDetector _mapCollisionDetector;
+
+        public Engine(IEnvironment environment)
         {
-            Movers = movers;
+            _environment = environment;
+            _mapCollisionDetector = new MapCollisionDetector(_environment);
+
+            _objects = new List<IGameObject>
+            {
+                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector))
+            };
+
+            for (int i = 0; i < 100; i++)
+            {
+                _objects.Add(new Food(new Point
+                {
+                    X = Random.Next(5, (int) _environment.Width - 5),
+                    Y = Random.Next(5, (int) _environment.Height - 5)
+                }));
+            }
+
+            //_organisms = new List<IOrganism>
+            //{
+            //    new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector))
+            //};
         }
         
         public void Update()
         {
-            foreach (var mover in Movers)
+            var dying = new List<IOrganism>();
+
+            var _organisms = _objects.OfType<IOrganism>();
+
+            foreach (var organism in _organisms)
             {
-                mover.Move();
+                if (organism.Energy <= 0)
+                {
+                    dying.Add(organism);
+                    continue;
+                }
+
+                organism.Update();
+            }
+
+            foreach (var organism in dying)
+            {
+                //_organisms.Remove(organism);
+                _objects.Remove(organism);
+                RemoveOrganismFromGameCanvas(organism);
             }
         }
 
         public async Task RunAsync()
         {
+            //foreach (var organism in _organisms)
+            //{
+            //    AddOrganismToGameCanvas(organism);
+            //}
+
+            foreach (var obj in _objects)
+            {
+                AddObjectToGameCanvas(obj);
+            }
+
             while (true)
             {
                 Update();

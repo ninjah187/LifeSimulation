@@ -11,26 +11,12 @@ namespace LifeSimulation.Core
     {
         protected static Random Random { get; } = new Random();
 
-        public Point Position
-        {
-            get { return _position; }
-            set { SetProperty(ref _position, value); }
-        }
-        Point _position;
-
         public Vector Direction
         {
             get { return _direction; }
             set { SetProperty(ref _direction, value); }
         }
         Vector _direction;
-
-        public double Size
-        {
-            get { return _size; }
-            set { SetProperty(ref _size, value); }
-        }
-        double _size;
 
         public ICircleHitBox HitBox { get; }
 
@@ -39,10 +25,8 @@ namespace LifeSimulation.Core
         int _currentStep;
         int _directionChangeStepsLimit;
 
-        public RandomMover(Point position, ICircleHitBox hitBox, IMapCollisionDetector mapCollisionDetector)
+        public RandomMover(ICircleHitBox hitBox, IMapCollisionDetector mapCollisionDetector)
         {
-            Position = position;
-
             HitBox = hitBox;
             _mapCollisionDetector = mapCollisionDetector;
         }
@@ -51,7 +35,7 @@ namespace LifeSimulation.Core
         {
         }
 
-        public void Move()
+        public void Move(IGameObject gameObject)
         {
             if (_currentStep >= _directionChangeStepsLimit)
             {
@@ -60,18 +44,18 @@ namespace LifeSimulation.Core
 
             _currentStep++;
 
-            var newPosition = Position + Direction;
+            var newPosition = gameObject.Position + Direction;
 
-            HitBox.Update(newPosition, Size);
+            HitBox.Update(newPosition, gameObject.Size);
 
             while (_mapCollisionDetector.Collides(HitBox))
             {
                 ChangeDirection();
-                newPosition = Position + Direction;
-                HitBox.Update(newPosition, Size);
+                newPosition = gameObject.Position + Direction;
+                HitBox.Update(newPosition, gameObject.Size);
             }
 
-            Position = newPosition;
+            gameObject.Position = newPosition;
         }
 
         void ChangeDirection()

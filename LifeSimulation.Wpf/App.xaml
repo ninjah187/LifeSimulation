@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:LifeSimulation.Wpf"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <local:DoubleToNumberConverter x:Key="DoubleToNumberConverter"/>
     </Application.Resources>
 </Application>

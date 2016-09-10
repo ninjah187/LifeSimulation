@@ -14,12 +14,13 @@
 
         <Border BorderThickness="1" BorderBrush="Black">
             <Canvas x:Name="GameCanvas">
-                <Ellipse Canvas.Top="{Binding Mover.Position.Y}" Canvas.Left="{Binding Mover.Position.X}" 
+                <!--<Ellipse Canvas.Top="{Binding Mover.Position.Y}" Canvas.Left="{Binding Mover.Position.X}" 
                          Width="{Binding Mover.Size}" Height="{Binding Mover.Size}"
                          Fill="Red"/>
                 <Ellipse Canvas.Top="{Binding Mover2.Position.Y}" Canvas.Left="{Binding Mover2.Position.X}" 
                          Width="{Binding Mover2.Size}" Height="{Binding Mover2.Size}"
-                         Fill="Blue"/>
+                         Fill="Blue"/>-->
+                <!--<local:OrganismControl Organism="{Binding Organism}"/>-->
             </Canvas>
         </Border>
 
@@ -28,21 +29,21 @@
                 <TextBlock Text="Mover position:"/>
                 <WrapPanel Orientation="Horizontal">
                     <TextBlock Text="X: "/>
-                    <TextBlock Text="{Binding Mover.Position.X}" HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding Organism.Mover.Position.X}" HorizontalAlignment="Right"/>
                 </WrapPanel>
                 <WrapPanel Orientation="Horizontal">
                     <TextBlock Text="Y: "/>
-                    <TextBlock Text="{Binding Mover.Position.Y}" HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding Organism.Mover.Position.Y}" HorizontalAlignment="Right"/>
                 </WrapPanel>
 
                 <TextBlock Text="Mover direction:"/>
                 <WrapPanel Orientation="Horizontal">
                     <TextBlock Text="X: "/>
-                    <TextBlock Text="{Binding Mover.Direction.X}" HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding Organism.Mover.Direction.X}" HorizontalAlignment="Right"/>
                 </WrapPanel>
                 <WrapPanel Orientation="Horizontal">
                     <TextBlock Text="Y: "/>
-                    <TextBlock Text="{Binding Mover.Direction.Y}" HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding Organism.Mover.Direction.Y}" HorizontalAlignment="Right"/>
                 </WrapPanel>
             </StackPanel>
         </Grid>

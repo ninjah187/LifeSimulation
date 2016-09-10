@@ -39,6 +39,10 @@
       <HintPath>..\packages\DotNetNinja.NotifyPropertyChanged.1.0.0\lib\net45\DotNetNinja.NotifyPropertyChanged.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="DotNetNinja.TypeFiltering, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNinja.TypeFiltering.0.2.0\lib\net45\DotNetNinja.TypeFiltering.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -59,6 +63,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="FoodControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -67,14 +75,24 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DoubleToNumberConverter.cs" />
     <Compile Include="EnvironmentExtensions.cs" />
-    <Compile Include="MainViewModel.cs" />
+    <Compile Include="FoodControl.xaml.cs">
+      <DependentUpon>FoodControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="OrganismControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OrganismControl.xaml.cs">
+      <DependentUpon>OrganismControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

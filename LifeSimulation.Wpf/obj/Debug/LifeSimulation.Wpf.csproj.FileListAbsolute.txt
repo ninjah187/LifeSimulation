@@ -16,3 +16,11 @@ C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Wpf\obj\Debug\LifeSimulation.Wpf
 C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Wpf\obj\Debug\LifeSimulation.Wpf.csproj.GenerateResource.Cache
 C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Wpf\obj\Debug\LifeSimulation.Wpf.exe
 C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Wpf\obj\Debug\LifeSimulation.Wpf.pdb
+C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Wpf\obj\Debug\OrganismControl.g.cs
+C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Wpf\obj\Debug\OrganismControl.baml
+C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Wpf\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Wpf\obj\Debug\App.baml
+C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Wpf\obj\Debug\FoodControl.g.cs
+C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Wpf\obj\Debug\FoodControl.baml
+C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Wpf\bin\Debug\DotNetNinja.TypeFiltering.dll
+C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Wpf\bin\Debug\DotNetNinja.TypeFiltering.xml

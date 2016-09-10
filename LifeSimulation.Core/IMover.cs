@@ -8,9 +8,9 @@ namespace LifeSimulation.Core
 {
     public interface IMover
     {
-        Point Position { get; }
+        Vector Direction { get; }
 
         void ApplyForce(Vector force);
-        void Move();
+        void Move(IGameObject gameObject);
     }
 }
