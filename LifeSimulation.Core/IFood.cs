@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace LifeSimulation.Core
 {
-    public interface IFood : IGameObject
+    public interface IFood : ICollidableGameObject
     {
-        Point Position { get; }
+        double Energy { get; set; }
     }
 }

@@ -6,26 +6,23 @@ using System.Threading.Tasks;
 
 namespace LifeSimulation.Core
 {
-    public class Food : GameObject, IFood
+    public class Food : CollidableGameObject, IFood
     {
-        ICircleHitBox _hitBox;
-        ICircleHitBoxCollisionDetector _organismCollisions;
-
-        public Food(Point position, ICircleHitBox hitBox, ICircleHitBoxCollisionDetector organismCollisions)
-            : base(position, 5)
+        public double Energy
         {
-            _hitBox = hitBox;
-            _organismCollisions = organismCollisions;
+            get { return _energy; }
+            set { SetProperty(ref _energy, value); }
+        }
+        double _energy;
 
-            _hitBox.Update(Position, Size);
+        public Food(Point position, ICircleHitBox hitBox)
+            : base(position, 5, hitBox)
+        {
+            Energy = 10;
         }
 
         public override void Update()
         {
-            if (_organismCollisions.Collides(_hitBox))
-            {
-                Console.WriteLine("> food collision");
-            }
         }
     }
 }

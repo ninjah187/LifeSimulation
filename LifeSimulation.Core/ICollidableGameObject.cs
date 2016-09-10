@@ -9,6 +9,7 @@ namespace LifeSimulation.Core
     public interface ICollidableGameObject : IGameObject
     {
         ICircleHitBox HitBox { get; set; }
-        ICollisi
+
+        void Update(params ICollidableGameObject[] nearby);
     }
 }

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DotNetNinja.TypeFiltering;
 using DotNetNinja.NotifyPropertyChanged;
 
 namespace LifeSimulation.Core
 {
-    public class RandomMover : PropertyChangedNotifier, IMover
+    public class Mover : PropertyChangedNotifier, IMover
     {
         protected static Random Random { get; } = new Random();
 
@@ -18,16 +19,13 @@ namespace LifeSimulation.Core
         }
         Vector _direction;
 
-        public ICircleHitBox HitBox { get; }
-
         IMapCollisionDetector _mapCollisionDetector;
 
         int _currentStep;
         int _directionChangeStepsLimit;
 
-        public RandomMover(ICircleHitBox hitBox, IMapCollisionDetector mapCollisionDetector)
+        public Mover(IMapCollisionDetector mapCollisionDetector)
         {
-            HitBox = hitBox;
             _mapCollisionDetector = mapCollisionDetector;
         }
 
@@ -35,7 +33,7 @@ namespace LifeSimulation.Core
         {
         }
 
-        public void Move(IGameObject gameObject)
+        public void Move(ICollidableGameObject gameObject, params ICollidableGameObject[] obstacles)
         {
             if (_currentStep >= _directionChangeStepsLimit)
             {
@@ -46,16 +44,38 @@ namespace LifeSimulation.Core
 
             var newPosition = gameObject.Position + Direction;
 
-            HitBox.Update(newPosition, gameObject.Size);
+            gameObject.HitBox.Update(newPosition, gameObject.Size);
 
-            while (_mapCollisionDetector.Collides(HitBox))
+            var canPass = true;
+
+            do
             {
-                ChangeDirection();
-                newPosition = gameObject.Position + Direction;
-                HitBox.Update(newPosition, gameObject.Size);
-            }
+                canPass = !_mapCollisionDetector.Collides(gameObject.HitBox);
+
+                canPass &= !CollidesWithObstacles(gameObject, obstacles);
+
+                if (!canPass)
+                {
+                    ChangeDirection();
+                    newPosition = gameObject.Position + Direction;
+                    gameObject.HitBox.Update(newPosition, gameObject.Size);
+                }
+            } while (!canPass);
 
             gameObject.Position = newPosition;
+        }
+
+        bool CollidesWithObstacles(ICollidableGameObject gameObject, IEnumerable<ICollidableGameObject> obstacles)
+        {
+            foreach (var obj in obstacles)
+            {
+                if (gameObject.HitBox.Collides(obj.HitBox))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         void ChangeDirection()

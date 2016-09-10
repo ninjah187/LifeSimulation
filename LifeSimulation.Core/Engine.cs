@@ -12,6 +12,7 @@ namespace LifeSimulation.Core
         static Random Random { get; } = new Random();
 
         public Action<IGameObject> AddObjectToGameCanvas { get; set; }
+        public Action<IGameObject> RemoveObjectFromGameCanvas { get; set; }
         public Action<IOrganism> AddOrganismToGameCanvas { get; set; }
         public Action<IOrganism> RemoveOrganismFromGameCanvas { get; set; }
 
@@ -21,66 +22,55 @@ namespace LifeSimulation.Core
         IEnvironment _environment;
         IMapCollisionDetector _mapCollisionDetector;
 
+        ICollider _collider;
+
         public Engine(IEnvironment environment)
         {
             _environment = environment;
             _mapCollisionDetector = new MapCollisionDetector(_environment);
 
+            _collider = new Collider();
+
             _objects = new List<IGameObject>
             {
-                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
-                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
-                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
-                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
-                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
-                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
-                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
-                new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector)),
+                new Organism(_environment.Center, new CircleHitBox(), new Mover(_mapCollisionDetector)),
             };
 
-            for (int i = 0; i < 100; i++)
-            {
-                _objects.Add(new Food(new Point
-                {
-                    X = Random.Next(5, (int) _environment.Width - 5),
-                    Y = Random.Next(5, (int) _environment.Height - 5)
-                }, new CircleHitBox(), new CircleHitBoxCollisionDetector(_objects.OfType<IOrganism>().Select(o => o.Mover.HitBox))));
-            }
-
-            //_organisms = new List<IOrganism>
-            //{
-            //    new Organism(_environment.Center, new RandomMover(new CircleHitBox(), _mapCollisionDetector))
-            //};
+            SpawnFood();
         }
-        
-        //public void Update()
-        //{
-        //    var dying = new List<IOrganism>();
 
-        //    var _organisms = _objects.OfType<IOrganism>();
+        void SpawnFood()
+        {
+            for (int i = 0; i < 200; i++)
+            {
+                var food = new Food(new Point
+                {
+                    X = Random.Next(5, (int)_environment.Width - 5),
+                    Y = Random.Next(5, (int)_environment.Height - 5)
+                }, new CircleHitBox());
 
-        //    foreach (var organism in _organisms)
-        //    {
-        //        if (organism.Energy <= 0)
-        //        {
-        //            dying.Add(organism);
-        //            continue;
-        //        }
+                var add = true;
 
-        //        organism.Update();
-        //    }
+                foreach (var organism in _objects.OfType<IOrganism>())
+                {
+                    if (organism.HitBox.Collides(food.HitBox))
+                    {
+                        add = false;
+                        break;
+                    }
+                }
 
-        //    foreach (var organism in dying)
-        //    {
-        //        //_organisms.Remove(organism);
-        //        _objects.Remove(organism);
-        //        RemoveOrganismFromGameCanvas(organism);
-        //    }
-        //}
+                if (add)
+                {
+                    _objects.Add(food);
+                }
+            }
+        }
 
         public void Update()
         {
             var dying = new List<IOrganism>();
+            var vanishingFood = new List<IFood>();
 
             var _organisms = _objects.OfType<IOrganism>();
 
@@ -89,7 +79,14 @@ namespace LifeSimulation.Core
                 if (organism.Energy <= 0)
                 {
                     dying.Add(organism);
-                    continue;
+                }
+            }
+
+            foreach (var food in _objects.OfType<IFood>())
+            {
+                if (food.Energy <= 0)
+                {
+                    vanishingFood.Add(food);
                 }
             }
 
@@ -99,6 +96,31 @@ namespace LifeSimulation.Core
                 _objects.Remove(organism);
                 RemoveOrganismFromGameCanvas(organism);
             }
+
+            foreach (var food in vanishingFood)
+            {
+                _objects.Remove(food);
+                RemoveObjectFromGameCanvas(food);
+            }
+
+            var collidableGameObjects = _objects.OfType<ICollidableGameObject>().ToList();
+
+            foreach (var obj in collidableGameObjects)
+            {
+                obj.Update(collidableGameObjects.Where(c => !(c is IOrganism)).ToArray());
+            }
+
+            var cloned = new List<IOrganism>();
+
+            foreach (var organism in _organisms.Where(o => o.Energy >= 100))
+            {
+                organism.Energy = 50;
+                var clone = new Organism(organism.Position, new CircleHitBox(), new Mover(_mapCollisionDetector));
+                cloned.Add(clone);
+                AddObjectToGameCanvas(clone);
+            }
+
+            _objects.AddRange(cloned);
 
             foreach (var obj in _objects)
             {

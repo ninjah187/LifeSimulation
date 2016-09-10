@@ -7,7 +7,7 @@ using DotNetNinja.NotifyPropertyChanged;
 
 namespace LifeSimulation.Core
 {
-    public class Organism : GameObject, IOrganism
+    public class Organism : CollidableGameObject, IOrganism
     {
         public IMover Mover
         {
@@ -23,20 +23,30 @@ namespace LifeSimulation.Core
         }
         double _energy;
 
-        public Organism(Point position, IMover mover)
-            : base(position, 20)
+        public Organism(Point position, ICircleHitBox hitBox, IMover mover)
+            : base(position, 20, hitBox)
         {
             Mover = mover;
-            Energy = 100;
+            Energy = 50;
         }
 
-        public override void Update()
+        public override void Update(params ICollidableGameObject[] nearby)
         {
-            Mover.Move(this);
+            Mover.Move(this, nearby.OfType<IOrganism>().ToArray());
+
+            foreach (var food in nearby.OfType<IFood>())
+            {
+                if (HitBox.Collides(food.HitBox))
+                {
+                    food.Energy -= 0.2;
+                    food.Size -= 0.02 * 5;
+                    Energy += 0.5;
+                }
+            }
 
             if (!Mover.Direction.Equals(default(Vector)))
             {
-                //Energy -= 0.1;
+                Energy -= 0.1;
             }
         }
     }

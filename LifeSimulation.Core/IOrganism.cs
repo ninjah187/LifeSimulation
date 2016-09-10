@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace LifeSimulation.Core
 {
-    public interface IOrganism : IGameObject
+    public interface IOrganism : ICollidableGameObject
     {
         IMover Mover { get; }
-        double Energy { get; }
+        double Energy { get; set; }
     }
 }

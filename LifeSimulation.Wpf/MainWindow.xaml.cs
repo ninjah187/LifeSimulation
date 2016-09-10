@@ -43,6 +43,13 @@ namespace LifeSimulation.Wpf
                         .BreakIfRecognized()
                         .When<IFood>(f => AddFoodToCanvas(f));
                 };
+                engine.RemoveObjectFromGameCanvas = gameObject =>
+                {
+                    gameObject
+                        .When<IOrganism>(o => RemoveOrganismFromCanvas(o))
+                        .BreakIfRecognized()
+                        .When<IFood>(f => RemoveFoodFromCanvas(f));
+                };
                 engine.AddOrganismToGameCanvas = AddOrganismToCanvas;
                 engine.RemoveOrganismFromGameCanvas = RemoveOrganismFromCanvas;
 
@@ -72,6 +79,15 @@ namespace LifeSimulation.Wpf
         public void AddFoodToCanvas(IFood food)
         {
             GameCanvas.Children.Add(new FoodControl(food));
+        }
+
+        public void RemoveFoodFromCanvas(IFood food)
+        {
+            var control = GameCanvas.Children
+                        .OfType<FoodControl>()
+                        .Single(c => c.Food == food);
+
+            GameCanvas.Children.Remove(control);
         }
     }
 }

@@ -6,5 +6,9 @@
              xmlns:local="clr-namespace:LifeSimulation.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Ellipse Width="{Binding Food.Size}" Height="{Binding Food.Size}" Fill="Green"/>
+    <StackPanel>
+        <Ellipse Width="{Binding Food.Size}" Height="{Binding Food.Size}" Fill="Green"/>
+        <!--<TextBlock FontSize="8" VerticalAlignment="Center" HorizontalAlignment="Center"
+                   Text="{Binding Food.Energy}"/>-->
+    </StackPanel>
 </UserControl>
