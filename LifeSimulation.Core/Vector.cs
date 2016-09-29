@@ -21,6 +21,13 @@ namespace LifeSimulation.Core
         public double Length => _length ?? (double) (_length = Math.Sqrt(X * X + Y * Y));
         double? _length;
 
+        public static Vector operator -(Vector v)
+            => new Vector
+            {
+                X = -v.X,
+                Y = -v.Y
+            };
+
         //public static bool operator ==(Vector v, Vector v2)
         //    => v.X == v2.X && v.Y == v2.Y;
 

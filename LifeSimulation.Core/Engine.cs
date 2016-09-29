@@ -36,12 +36,12 @@ namespace LifeSimulation.Core
                 new Organism(_environment.Center, new CircleHitBox(), new Mover(_mapCollisionDetector)),
             };
 
-            SpawnFood();
+            SpawnFood(400);
         }
 
-        void SpawnFood()
+        void SpawnFood(int count)
         {
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < count; i++)
             {
                 var food = new Food(new Point
                 {
@@ -107,15 +107,14 @@ namespace LifeSimulation.Core
 
             foreach (var obj in collidableGameObjects)
             {
-                obj.Update(collidableGameObjects.Where(c => !(c is IOrganism)).ToArray());
+                obj.Update(collidableGameObjects.Where(c => obj != c).ToArray());
             }
 
             var cloned = new List<IOrganism>();
 
             foreach (var organism in _organisms.Where(o => o.Energy >= 100))
             {
-                organism.Energy = 50;
-                var clone = new Organism(organism.Position, new CircleHitBox(), new Mover(_mapCollisionDetector));
+                var clone = organism.Clone();
                 cloned.Add(clone);
                 AddObjectToGameCanvas(clone);
             }
@@ -140,10 +139,20 @@ namespace LifeSimulation.Core
                 AddObjectToGameCanvas(obj);
             }
 
+            int stepCount = 0;
+
             while (true)
             {
+                //if (stepCount >= 1000)
+                //{
+                //    SpawnFood(10);
+                //    stepCount = 0;
+                //}
+
                 Update();
                 await Task.Delay(16);
+
+                //stepCount++;
             }
         }
     }

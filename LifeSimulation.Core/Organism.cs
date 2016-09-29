@@ -23,6 +23,8 @@ namespace LifeSimulation.Core
         }
         double _energy;
 
+        public List<IOrganism> Clones { get; set; } = new List<IOrganism>();
+
         public Organism(Point position, ICircleHitBox hitBox, IMover mover)
             : base(position, 20, hitBox)
         {
@@ -48,6 +50,20 @@ namespace LifeSimulation.Core
             {
                 Energy -= 0.1;
             }
+        }
+
+        public IOrganism Clone()
+        {
+            Energy = 50;
+            var clone = new Organism(Position, new CircleHitBox(), new Mover(Mover.MapCollisionDetector));
+
+            clone.Mover.CurrentStep = 0;
+            clone.Mover.DirectionChangeStepsLimit = (int) Size;
+            clone.Mover.Direction = -Mover.Direction;
+
+            Clones.Add(clone);
+
+            return clone;
         }
     }
 }

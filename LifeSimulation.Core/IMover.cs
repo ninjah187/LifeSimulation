@@ -8,7 +8,12 @@ namespace LifeSimulation.Core
 {
     public interface IMover
     {
-        Vector Direction { get; }
+        Vector Direction { get; set; }
+
+        IMapCollisionDetector MapCollisionDetector { get; set; }
+
+        int CurrentStep { get; set; }
+        int DirectionChangeStepsLimit { get; set; }
 
         void ApplyForce(Vector force);
         void Move(ICollidableGameObject gameObject, params ICollidableGameObject[] obstacles);

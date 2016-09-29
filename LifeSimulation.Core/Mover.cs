@@ -19,14 +19,14 @@ namespace LifeSimulation.Core
         }
         Vector _direction;
 
-        IMapCollisionDetector _mapCollisionDetector;
+        public IMapCollisionDetector MapCollisionDetector { get; set; }
 
-        int _currentStep;
-        int _directionChangeStepsLimit;
+        public int CurrentStep { get; set; }
+        public int DirectionChangeStepsLimit { get; set; }
 
         public Mover(IMapCollisionDetector mapCollisionDetector)
         {
-            _mapCollisionDetector = mapCollisionDetector;
+            MapCollisionDetector = mapCollisionDetector;
         }
 
         public void ApplyForce(Vector force)
@@ -35,12 +35,12 @@ namespace LifeSimulation.Core
 
         public void Move(ICollidableGameObject gameObject, params ICollidableGameObject[] obstacles)
         {
-            if (_currentStep >= _directionChangeStepsLimit)
+            if (CurrentStep >= DirectionChangeStepsLimit)
             {
                 ChangeDirection();
             }
 
-            _currentStep++;
+            CurrentStep++;
 
             var newPosition = gameObject.Position + Direction;
 
@@ -50,7 +50,7 @@ namespace LifeSimulation.Core
 
             do
             {
-                canPass = !_mapCollisionDetector.Collides(gameObject.HitBox);
+                canPass = !MapCollisionDetector.Collides(gameObject.HitBox);
 
                 canPass &= !CollidesWithObstacles(gameObject, obstacles);
 
@@ -69,19 +69,53 @@ namespace LifeSimulation.Core
         {
             foreach (var obj in obstacles)
             {
+                var areClones = AreClones(gameObject, obj);
+
                 if (gameObject.HitBox.Collides(obj.HitBox))
                 {
-                    return true;
+                    if (!areClones)
+                    {
+                        return true;   
+                    }
+                }
+                else
+                {
+                    if (areClones)
+                    {
+                        gameObject.When<IOrganism>(o =>
+                        {
+                            obj.When<IOrganism>(o2 =>
+                            {
+                                o.Clones.Remove(o2);
+                                o2.Clones.Remove(o);
+                            });
+                        });
+                    }
                 }
             }
 
             return false;
         }
 
+        bool AreClones(IGameObject gameObject, IGameObject obj)
+        {
+            var isClone = false;
+
+            gameObject.When<IOrganism>(o =>
+            {
+                obj.When<IOrganism>(o2 =>
+                {
+                    isClone = o.Clones.Contains(o2) || o2.Clones.Contains(o);
+                });
+            });
+
+            return isClone;
+        }
+
         void ChangeDirection()
         {
-            _currentStep = 0;
-            _directionChangeStepsLimit = Random.Next(5, 21);
+            CurrentStep = 0;
+            DirectionChangeStepsLimit = Random.Next(5, 21);
 
             //var oldMin = 0;
             //var oldMax = 1;

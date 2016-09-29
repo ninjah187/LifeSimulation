@@ -10,5 +10,7 @@ namespace LifeSimulation.Core
     {
         IMover Mover { get; }
         double Energy { get; set; }
+        List<IOrganism> Clones { get; set; }
+        IOrganism Clone();
     }
 }
