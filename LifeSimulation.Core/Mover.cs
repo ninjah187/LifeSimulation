@@ -67,49 +67,29 @@ namespace LifeSimulation.Core
 
         bool CollidesWithObstacles(ICollidableGameObject gameObject, IEnumerable<ICollidableGameObject> obstacles)
         {
+            var isClone = (gameObject as IOrganism)?.IsClone ?? false;
+            var clonesCollided = false;
+
             foreach (var obj in obstacles)
             {
-                var areClones = AreClones(gameObject, obj);
-
                 if (gameObject.HitBox.Collides(obj.HitBox))
                 {
-                    if (!areClones)
+                    var objIsClone = (obj as IOrganism)?.IsClone ?? false;
+                    if (isClone || objIsClone)
                     {
-                        return true;   
+                        clonesCollided = true;
+                        continue;
                     }
-                }
-                else
-                {
-                    if (areClones)
-                    {
-                        gameObject.When<IOrganism>(o =>
-                        {
-                            obj.When<IOrganism>(o2 =>
-                            {
-                                o.Clones.Remove(o2);
-                                o2.Clones.Remove(o);
-                            });
-                        });
-                    }
+                    return true;
                 }
             }
 
-            return false;
-        }
-
-        bool AreClones(IGameObject gameObject, IGameObject obj)
-        {
-            var isClone = false;
-
-            gameObject.When<IOrganism>(o =>
+            if (isClone && !clonesCollided)
             {
-                obj.When<IOrganism>(o2 =>
-                {
-                    isClone = o.Clones.Contains(o2) || o2.Clones.Contains(o);
-                });
-            });
+                ((IOrganism) gameObject).IsClone = false;
+            }
 
-            return isClone;
+            return false;
         }
 
         void ChangeDirection()
