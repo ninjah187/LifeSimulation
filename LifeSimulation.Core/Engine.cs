@@ -39,8 +39,10 @@ namespace LifeSimulation.Core
             SpawnFood(400);
         }
 
-        void SpawnFood(int count)
+        List<Food> SpawnFood(int count)
         {
+            var spawnedFood = new List<Food>();
+
             for (int i = 0; i < count; i++)
             {
                 var food = new Food(new Point
@@ -63,8 +65,11 @@ namespace LifeSimulation.Core
                 if (add)
                 {
                     _objects.Add(food);
+                    spawnedFood.Add(food);
                 }
             }
+
+            return spawnedFood;
         }
 
         public void Update()
@@ -129,11 +134,6 @@ namespace LifeSimulation.Core
 
         public async Task RunAsync()
         {
-            //foreach (var organism in _organisms)
-            //{
-            //    AddOrganismToGameCanvas(organism);
-            //}
-
             foreach (var obj in _objects)
             {
                 AddObjectToGameCanvas(obj);
@@ -143,16 +143,17 @@ namespace LifeSimulation.Core
 
             while (true)
             {
-                //if (stepCount >= 1000)
-                //{
-                //    SpawnFood(10);
-                //    stepCount = 0;
-                //}
+                if (stepCount >= 100)
+                {
+                    var spawned = SpawnFood(10);
+                    spawned.ForEach(f => AddObjectToGameCanvas(f));
+                    stepCount = 0;
+                }
 
                 Update();
                 await Task.Delay(16);
 
-                //stepCount++;
+                stepCount++;
             }
         }
     }
