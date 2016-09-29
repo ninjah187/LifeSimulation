@@ -33,7 +33,16 @@ namespace LifeSimulation.Core
 
             _objects = new List<IGameObject>
             {
-                new Organism(_environment.Center, new CircleHitBox(), new Mover(_mapCollisionDetector)),
+                //new Organism(_environment.Center, new CircleHitBox(), new Mover(_mapCollisionDetector)),
+                new Organism(new Point(100, 100), new CircleHitBox(), new Mover(_mapCollisionDetector)),
+                new Organism(
+                    new Point
+                    {
+                        X = _environment.Width - 100,
+                        Y = _environment.Height - 100
+                    },
+                    new CircleHitBox(), 
+                    new FoodTrackingMover(_mapCollisionDetector))
             };
 
             SpawnFood(400);

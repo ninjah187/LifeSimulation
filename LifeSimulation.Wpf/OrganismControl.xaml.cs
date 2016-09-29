@@ -35,13 +35,15 @@ namespace LifeSimulation.Wpf
         }
 
         public OrganismControl()
-            : this(null)
+            : this(null, Brushes.Red)
         {
         }
 
-        public OrganismControl(IOrganism organism)
+        public OrganismControl(IOrganism organism, Brush fill)
         {
             InitializeComponent();
+
+            MainEllipse.Fill = fill;
 
             (Content as FrameworkElement).DataContext = this;
 

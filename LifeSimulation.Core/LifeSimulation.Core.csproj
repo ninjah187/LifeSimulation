@@ -55,6 +55,7 @@
     <Compile Include="Engine.cs" />
     <Compile Include="Environment.cs" />
     <Compile Include="Food.cs" />
+    <Compile Include="FoodTrackingMover.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="ICircleHitBox.cs" />
     <Compile Include="ICircleHitBoxCollisionDetector.cs" />

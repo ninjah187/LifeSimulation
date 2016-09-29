@@ -33,11 +33,13 @@ namespace LifeSimulation.Core
         {
         }
 
-        public void Move(ICollidableGameObject gameObject, params ICollidableGameObject[] obstacles)
+        public void Move(ICollidableGameObject gameObject, params ICollidableGameObject[] nearby)
         {
+            var obstacles = nearby.OfType<IOrganism>().ToArray();
+
             if (CurrentStep >= DirectionChangeStepsLimit)
             {
-                ChangeDirection();
+                ChangeDirection(gameObject, nearby);
             }
 
             CurrentStep++;
@@ -56,7 +58,7 @@ namespace LifeSimulation.Core
 
                 if (!canPass)
                 {
-                    ChangeDirection();
+                    ChangeDirection(gameObject, nearby);
                     newPosition = gameObject.Position + Direction;
                     gameObject.HitBox.Update(newPosition, gameObject.Size);
                 }
@@ -92,7 +94,7 @@ namespace LifeSimulation.Core
             return false;
         }
 
-        void ChangeDirection()
+        protected virtual void ChangeDirection(ICollidableGameObject gameObject, IEnumerable<ICollidableGameObject> nearby)
         {
             CurrentStep = 0;
             DirectionChangeStepsLimit = Random.Next(5, 21);

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LifeSimulation.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" SizeToContent="WidthAndHeight">
-    <Grid Height="350" Width="525">
+    <Grid Width="800" Height="600">
         <Border BorderThickness="1" BorderBrush="Black">
             <Canvas x:Name="GameCanvas"/>
         </Border>

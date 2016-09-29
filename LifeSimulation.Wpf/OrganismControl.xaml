@@ -14,7 +14,8 @@
         </Grid.RowDefinitions>
         
         <Ellipse Width="{Binding Organism.Size}" Height="{Binding Organism.Size}"
-                 Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 x:Name="MainEllipse"/>
         <!--<TextBlock Text="{Binding Organism.Energy, Converter={StaticResource DoubleToNumberConverter}}" 
                    FontSize="8" VerticalAlignment="Center" HorizontalAlignment="Center"/>-->
 

@@ -64,7 +64,20 @@ namespace LifeSimulation.Wpf
 
         public void AddOrganismToCanvas(IOrganism organism)
         {
-            GameCanvas.Children.Add(new OrganismControl(organism));
+            Brush fill = null;
+
+            organism.Mover
+                .When<Mover>(m =>
+                {
+                    fill = Brushes.Red;
+                })
+                .When<FoodTrackingMover>(m =>
+                {
+                    fill = Brushes.Blue;
+                })
+                .ThrowIfNotRecognized();
+
+            GameCanvas.Children.Add(new OrganismControl(organism, fill));
         }
 
         public void RemoveOrganismFromCanvas(IOrganism organism)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DotNetNinja.NotifyPropertyChanged;
+using DotNetNinja.TypeFiltering;
 
 namespace LifeSimulation.Core
 {
@@ -34,7 +35,7 @@ namespace LifeSimulation.Core
 
         public override void Update(params ICollidableGameObject[] nearby)
         {
-            Mover.Move(this, nearby.OfType<IOrganism>().ToArray());
+            Mover.Move(this, nearby);
 
             foreach (var food in nearby.OfType<IFood>())
             {
@@ -55,7 +56,14 @@ namespace LifeSimulation.Core
         public IOrganism Clone()
         {
             Energy = 50;
-            var clone = new Organism(Position, new CircleHitBox(), new Mover(Mover.MapCollisionDetector));
+
+            Func<IMover> moverFactory = null;
+            Mover
+                .When<Mover>(m => moverFactory = () => new Mover(Mover.MapCollisionDetector))
+                .When<FoodTrackingMover>(m => moverFactory = () => new FoodTrackingMover(Mover.MapCollisionDetector))
+                .ThrowIfNotRecognized();
+
+            var clone = new Organism(Position, new CircleHitBox(), moverFactory());
 
             clone.Mover.CurrentStep = 0;
             clone.Mover.DirectionChangeStepsLimit = (int) Size;
