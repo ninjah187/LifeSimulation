@@ -1,9 +1,0 @@
-C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Core\bin\Debug\LifeSimulation.Core.dll
-C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Core\bin\Debug\LifeSimulation.Core.pdb
-C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Core\obj\Debug\LifeSimulation.Core.csprojResolveAssemblyReference.cache
-C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Core\obj\Debug\LifeSimulation.Core.dll
-C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Core\obj\Debug\LifeSimulation.Core.pdb
-C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Core\bin\Debug\DotNetNinja.NotifyPropertyChanged.dll
-C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Core\bin\Debug\DotNetNinja.NotifyPropertyChanged.xml
-C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Core\bin\Debug\DotNetNinja.TypeFiltering.dll
-C:\Dane\Pisane\C#\LifeSimulation\LifeSimulation.Core\bin\Debug\DotNetNinja.TypeFiltering.xml
