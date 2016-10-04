@@ -59,69 +59,9 @@ namespace LifeSimulation.Core
         {
             var direction = new Vector();
 
-            //if (gameObject.Position.X < closestFood.Position.X)
-            //{
-            //    direction.X = 1;
-            //}
-            //else if (gameObject.Position.X == closestFood.Position.X)
-            //{
-            //    direction.X = 0;
-            //}
-            //else if (gameObject.Position.X > closestFood.Position.X)
-            //{
-            //    direction.X = -1;
-            //}
-
-            //if (gameObject.Position.Y < closestFood.Position.Y)
-            //{
-            //    direction.Y = 1;
-            //}
-            //else if (gameObject.Position.Y == closestFood.Position.Y)
-            //{
-            //    direction.Y = 0;
-            //}
-            //else if (gameObject.Position.Y > closestFood.Position.Y)
-            //{
-            //    direction.Y = -1;
-            //}
-
-            //var organismCenter = ((IOrganism) gameObject).HitBox.Center;
-            //var followPoint = closestFood.HitBox.Center;
-
-            //if (organismCenter.X < followPoint.X)
-            //{
-            //    direction.X = 1;
-            //}
-            //else if (organismCenter.X == followPoint.X)
-            //{
-            //    direction.X = 0;
-            //}
-            //else if (organismCenter.X > followPoint.X)
-            //{
-            //    direction.X = -1;
-            //}
-
-            //if (organismCenter.Y < followPoint.Y)
-            //{
-            //    direction.Y = 1;
-            //}
-            //else if (organismCenter.Y == followPoint.Y)
-            //{
-            //    direction.Y = 0;
-            //}
-            //else if (organismCenter.Y > followPoint.Y)
-            //{
-            //    direction.Y = -1;
-            //}
-
             var organism = (IOrganism)gameObject;
             var organismCenter = organism.HitBox.Center;
             var followPoint = closestFood.HitBox.Center;
-
-            //if ((organismCenter - followPoint).Length < organism.HitBox.Radius)
-            //{
-            //    Direction = new Vector(0, 0);
-            //}
 
             if (Math.Abs(organismCenter.X - followPoint.X) < 1)
             {
@@ -131,10 +71,6 @@ namespace LifeSimulation.Core
             {
                 direction.X = 1;
             }
-            //else if (organismCenter.X == followPoint.X)
-            //{
-            //    direction.X = 0;
-            //}
             else if (organismCenter.X > followPoint.X)
             {
                 direction.X = -1;
@@ -148,10 +84,6 @@ namespace LifeSimulation.Core
             {
                 direction.Y = 1;
             }
-            //else if (organismCenter.Y == followPoint.Y)
-            //{
-            //    direction.Y = 0;
-            //}
             else if (organismCenter.Y > followPoint.Y)
             {
                 direction.Y = -1;

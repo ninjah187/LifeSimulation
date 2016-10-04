@@ -129,8 +129,6 @@ namespace LifeSimulation.Core
                     runSummary.AddCollision(@object, otherObject);
                 }
             }
-            
-            //@object.When<IOrganism>(o => o.IsObstacle = true);
 
             return new CompleteCollisionTestResult(@object, collidesWith);
         }
@@ -142,15 +140,6 @@ namespace LifeSimulation.Core
             testResult
                 .When<IMapExceededCollisionTestResult>(r => shouldRepeat = true)
                 .When<IObstacleHitCollisionTestResult>(r => shouldRepeat = true);
-                //.When<IObstacleHitCollisionTestResult>(r =>
-                //{
-                //    shouldRepeat = true;
-
-                //    if (IsOrganismClone(r.TestTarget) || IsOrganismClone(r.Obstacle))
-                //    {
-                //        shouldRepeat = false;
-                //    }
-                //});
 
             return shouldRepeat;
         }

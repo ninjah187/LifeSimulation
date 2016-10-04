@@ -54,6 +54,7 @@
     <Compile Include="Collider.cs" />
     <Compile Include="Collision.cs" />
     <Compile Include="CollisionEngine.cs" />
+    <Compile Include="CollisionEngineDeadlockException.cs" />
     <Compile Include="CollisionEngineRunSummary.cs" />
     <Compile Include="CollisionResponse.cs" />
     <Compile Include="Collisions.cs" />
