@@ -39,16 +39,19 @@ namespace LifeSimulation.Core
 
             var newPosition = gameObject.Position + Direction;
 
-            _oldPosition = gameObject.Position;
+            MoveTo(gameObject, newPosition);
+        }
 
-            gameObject.Position = newPosition;
+        public void MoveTo(IGameObject gameObject, Point position)
+        {
+            _oldPosition = gameObject.Position;
+            gameObject.Position = position;
             gameObject.When<ICollidableGameObject>(o => o.HitBox.Update(gameObject));
         }
 
         public void RollbackMove(IGameObject gameObject)
         {
-            gameObject.Position = _oldPosition;
-            gameObject.When<ICollidableGameObject>(o => o.HitBox.Update(gameObject));
+            MoveTo(gameObject, _oldPosition);
         }
 
         public virtual void ChangeDirection(IGameObject gameObject, params IGameObject[] objects)
