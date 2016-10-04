@@ -10,55 +10,16 @@ namespace LifeSimulation.Core
     public class CollisionEngine : ICollisionEngine
     {
         IMapCollisionDetector _mapCollisionDetector;
-        ICollisionDeadlockResolver _collisionDeadlockResolver;
         List<ICollisionResponse> _collisionResponses;
 
         public CollisionEngine(IMapCollisionDetector mapCollisionDetector)
         {
             _mapCollisionDetector = mapCollisionDetector;
-            _collisionDeadlockResolver = new CollisionDeadlockResolver(mapCollisionDetector);
             _collisionResponses = new List<ICollisionResponse>
             {
                 new OrganismFoodCollisionResponse()
             };
         }
-
-        //public void Run(IGameObject[] objects)
-        //{
-        //    var collidableObjects = objects.OfType<ICollidableGameObject>().ToArray();
-
-        //    for (int i = 0; i < collidableObjects.Length; i++)
-        //    {
-        //        var obj1 = collidableObjects[i];
-
-        //        var canPass = true;
-
-        //        obj1.When<IMovingGameObject>(o => 
-        //        {
-        //            o.Mover.Move(o, objects);
-
-        //            if (_mapCollisionDetector.Collides(obj1.HitBox))
-        //            {
-        //                canPass = false;
-        //            }
-        //        });
-
-        //        for (int j = i + 1; j < collidableObjects.Length; j++)
-        //        {
-        //            var obj2 = collidableObjects[j];
-
-        //            if (obj1.HitBox.Collides(obj2.HitBox))
-        //            {
-        //                if (obj1.IsObstacle && obj2.IsObstacle)
-        //                {
-        //                    canPass = false;
-        //                }
-        //                Handle(obj1, obj2);
-        //            }
-        //        }
-        //    }
-        //}
-
         public ICollisionEngineRunSummary Run(IGameObject[] objects)
         {
             var collidableObjects = objects.OfType<ICollidableGameObject>().ToArray();
@@ -72,17 +33,9 @@ namespace LifeSimulation.Core
                 @object.When<IMovingGameObject>(o => o.Mover.Move(o, objects));
 
                 ICollisionTestResult collisionTestResult = null;
-                int collisionDeadlockCounter = 0;
-                const int collisionDeadlockLimit = 100;
                 while (true)
                 {
-                    collisionDeadlockCounter++;
-                    if (collisionDeadlockCounter >= collisionDeadlockLimit)
-                    {
-                        _collisionDeadlockResolver.Resolve(@object, collidableObjects.Skip(i + 1));
-                    }
-
-                    collisionTestResult = TestCollisions(@object, collidableObjects.Skip(i + 1), runSummary);
+                    collisionTestResult = TestCollisions(@object, collidableObjects.Where(o => o != @object), runSummary);
 
                     if (ShouldRepeatCollisionTest(collisionTestResult))
                     {
