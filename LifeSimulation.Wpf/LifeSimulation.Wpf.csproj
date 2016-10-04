@@ -80,6 +80,7 @@
     <Compile Include="FoodControl.xaml.cs">
       <DependentUpon>FoodControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IsCloneToOpacityConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -15,7 +15,7 @@
 
         <Ellipse Width="{Binding Organism.Size}" Height="{Binding Organism.Size}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
-                 x:Name="MainEllipse"/>
+                 x:Name="MainEllipse" Opacity="{Binding Organism.IsClone, Converter={StaticResource IsCloneToOpacityConverter}}"/>
 
         <ProgressBar Grid.Row="1" Minimum="0" Maximum="100" Value="{Binding Organism.Energy}" Height="5"
                      Margin="0,2.5,0,0"/>

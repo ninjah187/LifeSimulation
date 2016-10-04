@@ -24,7 +24,12 @@ namespace LifeSimulation.Core
         }
         double _energy;
 
-        public bool IsClone { get; set; }
+        public bool IsClone
+        {
+            get { return _isClone; }
+            set { SetProperty(ref _isClone, value); }
+        }
+        bool _isClone;
 
         public Organism(Point position, ICircleHitBox hitBox, IMover mover)
             : base(position, 20, hitBox)
