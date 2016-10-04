@@ -20,29 +20,29 @@ namespace LifeSimulation.Core
         List<IGameObject> _objects;
 
         IEnvironment _environment;
-        IMapCollisionDetector _mapCollisionDetector;
+        ICollisionEngine _collisionEngine;
 
         ICollider _collider;
 
         public Engine(IEnvironment environment)
         {
             _environment = environment;
-            _mapCollisionDetector = new MapCollisionDetector(_environment);
+            _collisionEngine = new CollisionEngine(new MapCollisionDetector(_environment));
 
             _collider = new Collider();
 
             _objects = new List<IGameObject>
             {
-                //new Organism(_environment.Center, new CircleHitBox(), new Mover(_mapCollisionDetector)),
-                new Organism(new Point(100, 100), new CircleHitBox(), new Mover(_mapCollisionDetector)),
+                //new Organism(_environment.Center, new CircleHitBox(), new Mover()),
+                new Organism(new Point(100, 100), new CircleHitBox(), new Mover()),
                 new Organism(
                     new Point
                     {
                         X = _environment.Width - 100,
                         Y = _environment.Height - 100
                     },
-                    new CircleHitBox(), 
-                    new FoodTrackingMover(_mapCollisionDetector))
+                    new CircleHitBox(),
+                    new FoodTrackingMover())
             };
 
             SpawnFood(400);
@@ -82,13 +82,13 @@ namespace LifeSimulation.Core
         }
 
         public void Update()
-        {
+            {
             var dying = new List<IOrganism>();
             var vanishingFood = new List<IFood>();
 
-            var _organisms = _objects.OfType<IOrganism>();
+            var organisms = _objects.OfType<IOrganism>();
 
-            foreach (var organism in _organisms)
+            foreach (var organism in organisms)
             {
                 if (organism.Energy <= 0)
                 {
@@ -106,7 +106,6 @@ namespace LifeSimulation.Core
 
             foreach (var organism in dying)
             {
-                //_organisms.Remove(organism);
                 _objects.Remove(organism);
                 RemoveOrganismFromGameCanvas(organism);
             }
@@ -117,16 +116,8 @@ namespace LifeSimulation.Core
                 RemoveObjectFromGameCanvas(food);
             }
 
-            var collidableGameObjects = _objects.OfType<ICollidableGameObject>().ToList();
-
-            foreach (var obj in collidableGameObjects)
-            {
-                obj.Update(collidableGameObjects.Where(c => obj != c).ToArray());
-            }
-
             var cloned = new List<IOrganism>();
-
-            foreach (var organism in _organisms.Where(o => o.Energy >= 100))
+            foreach (var organism in organisms.Where(o => o.Energy >= 100))
             {
                 var clone = organism.Clone();
                 cloned.Add(clone);
@@ -135,10 +126,49 @@ namespace LifeSimulation.Core
 
             _objects.AddRange(cloned);
 
+            var collisionEngineRunSummary = _collisionEngine.Run(_objects.ToArray());
+
+            //var clonesWithoutCollisions = collisionEngineRunSummary
+            //    .Collisions
+            //    .Where(c => ((c.Key as IOrganism)?.IsClone ?? false) && c.Value.Count == 0)
+            //    .Select(c => (IOrganism) c.Key);
+
+            var clonesWithoutCollisions = _objects
+                .OfType<IOrganism>()
+                .Where(o => o.IsClone && !collisionEngineRunSummary.Collisions.ContainsKey(o));
+
+            foreach (var clone in clonesWithoutCollisions)
+            {
+                clone.IsClone = false;
+            }
+
             foreach (var obj in _objects)
             {
                 obj.Update();
             }
+
+            //var collidableGameObjects = _objects.OfType<ICollidableGameObject>().ToList();
+
+            //foreach (var obj in collidableGameObjects)
+            //{
+            //    obj.Update(collidableGameObjects.Where(c => obj != c).ToArray());
+            //}
+
+            //var cloned = new List<IOrganism>();
+
+            //foreach (var organism in _organisms.Where(o => o.Energy >= 100))
+            //{
+            //    var clone = organism.Clone();
+            //    cloned.Add(clone);
+            //    AddObjectToGameCanvas(clone);
+            //}
+
+            //_objects.AddRange(cloned);
+
+            //foreach (var obj in _objects)
+            //{
+            //    obj.Update();
+            //}
         }
 
         public async Task RunAsync()

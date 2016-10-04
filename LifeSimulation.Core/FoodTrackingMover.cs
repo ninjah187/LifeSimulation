@@ -8,35 +8,12 @@ namespace LifeSimulation.Core
 {
     public class FoodTrackingMover : Mover
     {
-        public FoodTrackingMover(IMapCollisionDetector mapCollisionDetector)
-            : base(mapCollisionDetector)
-        {
-        }
-
-        protected override void ChangeDirection(ICollidableGameObject gameObject, IEnumerable<ICollidableGameObject> nearby)
+        public override void ChangeDirection(IGameObject gameObject, params IGameObject[] objects)
         {
             CurrentStep = 0;
 
             //var closestFood = nearby.OfType<IFood>().Aggregate((curMin, f) => curMin == null || curMin.)
-            IFood closestFood = null;
-            var smallestFoodDistance = double.MaxValue;
-            foreach (var food in nearby.OfType<IFood>())
-            {
-                if (closestFood == null)
-                {
-                    closestFood = food;
-                    smallestFoodDistance = (gameObject.Position - food.Position).Length;
-                    continue;
-                }
-
-                var currentFoodDistance = (gameObject.Position - food.Position).Length;
-
-                if (currentFoodDistance < smallestFoodDistance)
-                {
-                    smallestFoodDistance = currentFoodDistance;
-                    closestFood = food;
-                }
-            }
+            var closestFood = GetClosestFood(gameObject, objects);
 
             if (closestFood != null && Random.NextDouble() < 0.9)
             {
@@ -54,7 +31,31 @@ namespace LifeSimulation.Core
             }
         }
 
-        void FollowClosestFood(ICollidableGameObject gameObject, IFood closestFood)
+        IFood GetClosestFood(IGameObject gameObject, IGameObject[] objects)
+        {
+            IFood closestFood = null;
+            var smallestFoodDistance = double.MaxValue;
+            foreach (var food in objects.OfType<IFood>())
+            {
+                if (closestFood == null)
+                {
+                    closestFood = food;
+                    smallestFoodDistance = (gameObject.Position - food.Position).Length;
+                    continue;
+                }
+
+                var currentFoodDistance = (gameObject.Position - food.Position).Length;
+
+                if (currentFoodDistance < smallestFoodDistance)
+                {
+                    smallestFoodDistance = currentFoodDistance;
+                    closestFood = food;
+                }
+            }
+            return closestFood;
+        }
+
+        void FollowClosestFood(IGameObject gameObject, IFood closestFood)
         {
             var direction = new Vector();
 

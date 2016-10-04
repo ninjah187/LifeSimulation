@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace LifeSimulation.Core
 {
-    public interface ICollidableGameObject : IGameObject
+    public interface IMapExceededCollisionTestResult : ICollisionTestResult
     {
-        ICircleHitBox HitBox { get; set; }
-        bool IsObstacle { get; set; }
     }
 }

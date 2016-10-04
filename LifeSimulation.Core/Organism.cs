@@ -31,26 +31,22 @@ namespace LifeSimulation.Core
         {
             Mover = mover;
             Energy = 50;
+            IsObstacle = true;
         }
 
-        public override void Update(params ICollidableGameObject[] nearby)
+        public override void Update()
         {
-            Mover.Move(this, nearby);
-
-            foreach (var food in nearby.OfType<IFood>())
-            {
-                if (HitBox.Collides(food.HitBox))
-                {
-                    food.Energy -= 0.2;
-                    food.Size -= 0.02 * 5;
-                    Energy += 0.5;
-                }
-            }
-
             if (!Mover.Direction.Equals(default(Vector)))
             {
                 Energy -= 0.1;
             }
+        }
+
+        public void Eat(IFood food)
+        {
+            food.Energy -= 0.2;
+            food.Size -= 0.02 * 5;
+            Energy += 0.5;
         }
 
         public IOrganism Clone()
@@ -59,8 +55,8 @@ namespace LifeSimulation.Core
 
             Func<IMover> moverFactory = null;
             Mover
-                .When<Mover>(m => moverFactory = () => new Mover(Mover.MapCollisionDetector))
-                .When<FoodTrackingMover>(m => moverFactory = () => new FoodTrackingMover(Mover.MapCollisionDetector))
+                .When<Mover>(m => moverFactory = () => new Mover())
+                .When<FoodTrackingMover>(m => moverFactory = () => new FoodTrackingMover())
                 .ThrowIfNotRecognized();
 
             var clone = new Organism(Position, new CircleHitBox(), moverFactory());
@@ -70,6 +66,7 @@ namespace LifeSimulation.Core
             clone.Mover.Direction = -Mover.Direction;
 
             clone.IsClone = true;
+            //clone.IsObstacle = false;
 
             return clone;
         }

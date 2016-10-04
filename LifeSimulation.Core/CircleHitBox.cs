@@ -11,8 +11,11 @@ namespace LifeSimulation.Core
         public Point Center { get; set; }
         public double Radius { get; set; }
 
-        public void Update(Point topLeft, double size)
+        public void Update(IGameObject gameObject)
         {
+            var topLeft = gameObject.Position;
+            var size = gameObject.Size;
+
             Radius = size / 2;
 
             Center = new Point

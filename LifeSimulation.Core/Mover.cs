@@ -19,97 +19,47 @@ namespace LifeSimulation.Core
         }
         Vector _direction;
 
-        public IMapCollisionDetector MapCollisionDetector { get; set; }
-
         public int CurrentStep { get; set; }
         public int DirectionChangeStepsLimit { get; set; }
 
-        public Mover(IMapCollisionDetector mapCollisionDetector)
-        {
-            MapCollisionDetector = mapCollisionDetector;
-        }
+        Point _oldPosition;
 
-        public void ApplyForce(Vector force)
+        public Mover()
         {
         }
 
-        public void Move(ICollidableGameObject gameObject, params ICollidableGameObject[] nearby)
+        public void Move(IGameObject gameObject, params IGameObject[] objects)
         {
-            var obstacles = nearby.OfType<IOrganism>().ToArray();
-
             if (CurrentStep >= DirectionChangeStepsLimit)
             {
-                ChangeDirection(gameObject, nearby);
+                ChangeDirection(gameObject, objects);
             }
 
             CurrentStep++;
 
             var newPosition = gameObject.Position + Direction;
 
-            gameObject.HitBox.Update(newPosition, gameObject.Size);
-
-            var canPass = true;
-
-            do
-            {
-                canPass = !MapCollisionDetector.Collides(gameObject.HitBox);
-
-                canPass &= !CollidesWithObstacles(gameObject, obstacles);
-
-                if (!canPass)
-                {
-                    ChangeDirection(gameObject, nearby);
-                    newPosition = gameObject.Position + Direction;
-                    gameObject.HitBox.Update(newPosition, gameObject.Size);
-                }
-            } while (!canPass);
+            _oldPosition = gameObject.Position;
 
             gameObject.Position = newPosition;
+            gameObject.When<ICollidableGameObject>(o => o.HitBox.Update(gameObject));
         }
 
-        bool CollidesWithObstacles(ICollidableGameObject gameObject, IEnumerable<ICollidableGameObject> obstacles)
+        public void RollbackMove(IGameObject gameObject)
         {
-            var isClone = (gameObject as IOrganism)?.IsClone ?? false;
-            var clonesCollided = false;
-
-            foreach (var obj in obstacles)
-            {
-                if (gameObject.HitBox.Collides(obj.HitBox))
-                {
-                    var objIsClone = (obj as IOrganism)?.IsClone ?? false;
-                    if (isClone || objIsClone)
-                    {
-                        clonesCollided = true;
-                        continue;
-                    }
-                    return true;
-                }
-            }
-
-            if (isClone && !clonesCollided)
-            {
-                ((IOrganism) gameObject).IsClone = false;
-            }
-
-            return false;
+            gameObject.Position = _oldPosition;
+            gameObject.When<ICollidableGameObject>(o => o.HitBox.Update(gameObject));
         }
 
-        protected virtual void ChangeDirection(ICollidableGameObject gameObject, IEnumerable<ICollidableGameObject> nearby)
+        public virtual void ChangeDirection(IGameObject gameObject, params IGameObject[] objects)
         {
             CurrentStep = 0;
             DirectionChangeStepsLimit = Random.Next(5, 21);
-
-            //var oldMin = 0;
-            //var oldMax = 1;
-            //var newMin = -1;
-            //var newMax = 1;
 
             Direction = new Vector
             {
                 X = Random.Next(-1, 2),
                 Y = Random.Next(-1, 2)
-                //X = (((Random.NextDouble() - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin,
-                //Y = (((Random.NextDouble() - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin
             };
         }
     }

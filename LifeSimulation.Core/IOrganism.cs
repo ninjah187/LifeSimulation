@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace LifeSimulation.Core
 {
-    public interface IOrganism : ICollidableGameObject
+    public interface IOrganism : ICollidableGameObject, IMovingGameObject
     {
-        IMover Mover { get; }
         double Energy { get; set; }
         bool IsClone { get; set; }
         IOrganism Clone();
+        void Eat(IFood food);
     }
 }

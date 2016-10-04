@@ -11,7 +11,7 @@ namespace LifeSimulation.Core
         Point Center { get; set; }
         double Radius { get; set; }
 
-        void Update(Point topLeft, double size);
+        void Update(IGameObject gameObject);
         bool Collides(ICircleHitBox hitBox);
     }
 }
