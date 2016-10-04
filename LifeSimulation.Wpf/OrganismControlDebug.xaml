@@ -1,4 +1,4 @@
-﻿<local:OrganismControlBase x:Class="LifeSimulation.Wpf.OrganismControl"
+﻿<local:OrganismControlBase x:Class="LifeSimulation.Wpf.OrganismControlDebug"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,15 +9,18 @@
              Canvas.Top="{Binding Organism.Position.Y}" Canvas.Left="{Binding Organism.Position.X}">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Ellipse Width="{Binding Organism.Size}" Height="{Binding Organism.Size}"
+        <TextBlock FontSize="10" Text="{Binding Organism.Id}"/>
+
+        <Ellipse Grid.Row="1" Width="{Binding Organism.Size}" Height="{Binding Organism.Size}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  x:Name="MainEllipse"/>
 
-        <ProgressBar Grid.Row="1" Minimum="0" Maximum="100" Value="{Binding Organism.Energy}" Height="5"
+        <ProgressBar Grid.Row="2" Minimum="0" Maximum="100" Value="{Binding Organism.Energy}" Height="5"
                      Margin="0,2.5,0,0"/>
     </Grid>
 </local:OrganismControlBase>

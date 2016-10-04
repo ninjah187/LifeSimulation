@@ -8,6 +8,8 @@ namespace LifeSimulation.Core
 {
     public interface IGameObject
     {
+        Guid Id { get; }
+
         Point Position { get; set; }
         double Size { get; set; }
 

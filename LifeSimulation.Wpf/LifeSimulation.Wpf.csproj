@@ -93,6 +93,7 @@
     <Compile Include="OrganismControl.xaml.cs">
       <DependentUpon>OrganismControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OrganismControlBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

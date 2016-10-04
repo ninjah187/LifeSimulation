@@ -9,6 +9,8 @@ namespace LifeSimulation.Core
 {
     public class GameObject : PropertyChangedNotifier, IGameObject
     {
+        public Guid Id { get; }
+
         public Point Position
         {
             get { return _position; }
@@ -25,6 +27,7 @@ namespace LifeSimulation.Core
 
         public GameObject(Point position, double size)
         {
+            Id = Guid.NewGuid();
             Position = position;
             Size = size;
         }
