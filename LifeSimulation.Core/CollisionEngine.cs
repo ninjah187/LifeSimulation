@@ -85,8 +85,10 @@ namespace LifeSimulation.Core
                             })
                             .ThrowIfNotRecognized();
                     }
-
-                    break;
+                    else
+                    {
+                        break;
+                    }
                 }
 
                 foreach (var response in _collisionResponses)

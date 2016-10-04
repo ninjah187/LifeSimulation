@@ -133,11 +133,13 @@ namespace LifeSimulation.Core
             //    .Where(c => ((c.Key as IOrganism)?.IsClone ?? false) && c.Value.Count == 0)
             //    .Select(c => (IOrganism) c.Key);
 
-            var clonesWithoutCollisions = _objects
+            var clonesWithoutCollisionsWithOrganisms = _objects
                 .OfType<IOrganism>()
-                .Where(o => o.IsClone && !collisionEngineRunSummary.Collisions.ContainsKey(o));
+                .Where(o => o.IsClone && 
+                            (!collisionEngineRunSummary.Collisions.ContainsKey(o) || 
+                             !collisionEngineRunSummary.Collisions[o].Any(c => c is IOrganism)));
 
-            foreach (var clone in clonesWithoutCollisions)
+            foreach (var clone in clonesWithoutCollisionsWithOrganisms)
             {
                 clone.IsClone = false;
             }
