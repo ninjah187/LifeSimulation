@@ -10,11 +10,13 @@ namespace LifeSimulation.Core
     public class CollisionEngine : ICollisionEngine
     {
         IMapCollisionDetector _mapCollisionDetector;
+        ICollisionDeadlockResolver _collisionDeadlockResolver;
         List<ICollisionResponse> _collisionResponses;
 
         public CollisionEngine(IMapCollisionDetector mapCollisionDetector)
         {
             _mapCollisionDetector = mapCollisionDetector;
+            _collisionDeadlockResolver = new CollisionDeadlockResolver(mapCollisionDetector);
             _collisionResponses = new List<ICollisionResponse>
             {
                 new OrganismFoodCollisionResponse()
@@ -70,8 +72,16 @@ namespace LifeSimulation.Core
                 @object.When<IMovingGameObject>(o => o.Mover.Move(o, objects));
 
                 ICollisionTestResult collisionTestResult = null;
+                int collisionDeadlockCounter = 0;
+                const int collisionDeadlockLimit = 100;
                 while (true)
                 {
+                    collisionDeadlockCounter++;
+                    if (collisionDeadlockCounter >= collisionDeadlockLimit)
+                    {
+                        _collisionDeadlockResolver.Resolve(@object, collidableObjects.Skip(i + 1));
+                    }
+
                     collisionTestResult = TestCollisions(@object, collidableObjects.Skip(i + 1), runSummary);
 
                     if (ShouldRepeatCollisionTest(collisionTestResult))

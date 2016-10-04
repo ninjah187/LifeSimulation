@@ -88,12 +88,20 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="OrganismControlDebug.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OrganismControl.xaml.cs">
       <DependentUpon>OrganismControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="OrganismControlBase.cs" />
+    <Compile Include="OrganismControlDebug.xaml.cs">
+      <DependentUpon>OrganismControlDebug.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OrganismControlFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

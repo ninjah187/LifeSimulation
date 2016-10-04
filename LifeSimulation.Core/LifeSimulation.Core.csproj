@@ -53,6 +53,7 @@
     <Compile Include="CollidableGameObject.cs" />
     <Compile Include="Collider.cs" />
     <Compile Include="Collision.cs" />
+    <Compile Include="CollisionDeadlockResolver.cs" />
     <Compile Include="CollisionEngine.cs" />
     <Compile Include="CollisionEngineDeadlockException.cs" />
     <Compile Include="CollisionEngineRunSummary.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="ICollidableGameObject.cs" />
     <Compile Include="ICollider.cs" />
     <Compile Include="ICollision.cs" />
+    <Compile Include="ICollisionDeadlockResolver.cs" />
     <Compile Include="ICollisionEngine.cs" />
     <Compile Include="ICollisionEngineRunSummary.cs" />
     <Compile Include="ICollisionResponse.cs" />

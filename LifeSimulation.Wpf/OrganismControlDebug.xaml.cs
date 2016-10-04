@@ -12,17 +12,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LifeSimulation.Core;
 
 namespace LifeSimulation.Wpf
 {
     /// <summary>
     /// Interaction logic for OrganismControlDebug.xaml
     /// </summary>
-    public partial class OrganismControlDebug : UserControl
+    public partial class OrganismControlDebug : OrganismControlBase
     {
-        public OrganismControlDebug()
+        public OrganismControlDebug(IOrganism organism, Brush fill)
+            : base(organism)
         {
             InitializeComponent();
+
+            MainEllipse.Fill = fill;
         }
     }
 }

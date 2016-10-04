@@ -14,13 +14,13 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock FontSize="10" Text="{Binding Organism.Id}"/>
+        <TextBlock FontSize="10" Text="{Binding Organism.Id}" TextWrapping="Wrap"/>
 
         <Ellipse Grid.Row="1" Width="{Binding Organism.Size}" Height="{Binding Organism.Size}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  x:Name="MainEllipse"/>
 
-        <ProgressBar Grid.Row="2" Minimum="0" Maximum="100" Value="{Binding Organism.Energy}" Height="5"
+        <ProgressBar Grid.Row="2" Minimum="0" Maximum="100" Value="{Binding Organism.Energy}" Height="5" Width="50"
                      Margin="0,2.5,0,0"/>
     </Grid>
 </local:OrganismControlBase>

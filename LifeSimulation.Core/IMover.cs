@@ -16,5 +16,6 @@ namespace LifeSimulation.Core
         void Move(IGameObject gameObject, params IGameObject[] objects);
         void ChangeDirection(IGameObject gameObject, params IGameObject[] objects);
         void RollbackMove(IGameObject gameObject);
+        void MoveTo(IGameObject gameObject, Point position);
     }
 }
