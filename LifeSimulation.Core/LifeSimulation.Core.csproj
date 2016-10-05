@@ -50,7 +50,6 @@
   <ItemGroup>
     <Compile Include="CircleHitBox.cs" />
     <Compile Include="CollidableGameObject.cs" />
-    <Compile Include="Collision.cs" />
     <Compile Include="CollisionEngine.cs" />
     <Compile Include="CollisionEngineRunSummary.cs" />
     <Compile Include="CollisionResponse.cs" />
@@ -63,8 +62,6 @@
     <Compile Include="GameObject.cs" />
     <Compile Include="ICircleHitBox.cs" />
     <Compile Include="ICollidableGameObject.cs" />
-    <Compile Include="ICollision.cs" />
-    <Compile Include="ICollisionDeadlockResolver.cs" />
     <Compile Include="ICollisionEngine.cs" />
     <Compile Include="ICollisionEngineRunSummary.cs" />
     <Compile Include="ICollisionResponse.cs" />
@@ -76,7 +73,6 @@
     <Compile Include="IEnvironment.cs" />
     <Compile Include="IFood.cs" />
     <Compile Include="IGameObject.cs" />
-    <Compile Include="IGameObjectCollisionDetector.cs" />
     <Compile Include="IMapCollisionDetector.cs" />
     <Compile Include="IMapExceededCollisionTestResult.cs" />
     <Compile Include="IMover.cs" />
