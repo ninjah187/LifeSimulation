@@ -20,6 +20,7 @@ namespace LifeSimulation.Core
                 new OrganismFoodCollisionResponse()
             };
         }
+
         public ICollisionEngineRunSummary Run(IGameObject[] objects)
         {
             var collidableObjects = objects.OfType<ICollidableGameObject>().ToArray();

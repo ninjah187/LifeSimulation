@@ -28,6 +28,11 @@ namespace LifeSimulation.Core
                 Collisions.Add(obj1, new List<ICollidableGameObject>());
             }
 
+            if (Collisions[obj1].Contains(obj2))
+            {
+                return;
+            }
+
             Collisions[obj1].Add(obj2);
         }
     }

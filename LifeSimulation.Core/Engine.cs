@@ -15,21 +15,16 @@ namespace LifeSimulation.Core
         public Action<IGameObject> RemoveObjectFromGameCanvas { get; set; }
         public Action<IOrganism> AddOrganismToGameCanvas { get; set; }
         public Action<IOrganism> RemoveOrganismFromGameCanvas { get; set; }
-
-        //List<IOrganism> _organisms;
+        
         List<IGameObject> _objects;
 
         IEnvironment _environment;
         ICollisionEngine _collisionEngine;
 
-        ICollider _collider;
-
         public Engine(IEnvironment environment)
         {
             _environment = environment;
             _collisionEngine = new CollisionEngine(new MapCollisionDetector(_environment));
-
-            _collider = new Collider();
 
             _objects = new List<IGameObject>
             {
@@ -128,11 +123,6 @@ namespace LifeSimulation.Core
 
             var collisionEngineRunSummary = _collisionEngine.Run(_objects.ToArray());
 
-            //var clonesWithoutCollisions = collisionEngineRunSummary
-            //    .Collisions
-            //    .Where(c => ((c.Key as IOrganism)?.IsClone ?? false) && c.Value.Count == 0)
-            //    .Select(c => (IOrganism) c.Key);
-
             var clonesWithoutCollisionsWithOrganisms = _objects
                 .OfType<IOrganism>()
                 .Where(o => o.IsClone && 
@@ -148,29 +138,6 @@ namespace LifeSimulation.Core
             {
                 obj.Update();
             }
-
-            //var collidableGameObjects = _objects.OfType<ICollidableGameObject>().ToList();
-
-            //foreach (var obj in collidableGameObjects)
-            //{
-            //    obj.Update(collidableGameObjects.Where(c => obj != c).ToArray());
-            //}
-
-            //var cloned = new List<IOrganism>();
-
-            //foreach (var organism in _organisms.Where(o => o.Energy >= 100))
-            //{
-            //    var clone = organism.Clone();
-            //    cloned.Add(clone);
-            //    AddObjectToGameCanvas(clone);
-            //}
-
-            //_objects.AddRange(cloned);
-
-            //foreach (var obj in _objects)
-            //{
-            //    obj.Update();
-            //}
         }
 
         public async Task RunAsync()

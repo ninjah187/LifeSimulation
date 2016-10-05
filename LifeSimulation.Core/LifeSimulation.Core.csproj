@@ -49,16 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CircleHitBox.cs" />
-    <Compile Include="CircleHitBoxCollisionDetector.cs" />
     <Compile Include="CollidableGameObject.cs" />
-    <Compile Include="Collider.cs" />
     <Compile Include="Collision.cs" />
-    <Compile Include="CollisionDeadlockResolver.cs" />
     <Compile Include="CollisionEngine.cs" />
-    <Compile Include="CollisionEngineDeadlockException.cs" />
     <Compile Include="CollisionEngineRunSummary.cs" />
     <Compile Include="CollisionResponse.cs" />
-    <Compile Include="Collisions.cs" />
     <Compile Include="CollisionTestResult.cs" />
     <Compile Include="CompleteCollisionTestResult.cs" />
     <Compile Include="Engine.cs" />
@@ -67,9 +62,7 @@
     <Compile Include="FoodTrackingMover.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="ICircleHitBox.cs" />
-    <Compile Include="ICircleHitBoxCollisionDetector.cs" />
     <Compile Include="ICollidableGameObject.cs" />
-    <Compile Include="ICollider.cs" />
     <Compile Include="ICollision.cs" />
     <Compile Include="ICollisionDeadlockResolver.cs" />
     <Compile Include="ICollisionEngine.cs" />
