@@ -23,14 +23,14 @@ namespace LifeSimulation.Wpf
     /// </summary>
     public partial class MainWindow : Window, IView
     {
-        OrganismControlBaseFactory _organismControlFactory;
+        Func<IOrganism, Brush, OrganismControlBase> _organismControlFactory;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _organismControlFactory = new OrganismControlFactory();
-            //_organismControlFactory = new OrganismControlDebugFactory();
+            _organismControlFactory = (organism, fill) => new OrganismControl(organism, fill);
+            //_organismControlFactory = (organism, fill) => new OrganismControlDebug(organism, fill);
 
             Loaded += delegate
             {
@@ -82,7 +82,7 @@ namespace LifeSimulation.Wpf
                 })
                 .ThrowIfNotRecognized();
 
-            GameCanvas.Children.Add(_organismControlFactory.CreateOrganismControl(organism, fill));
+            GameCanvas.Children.Add(_organismControlFactory(organism, fill));
         }
 
         public void RemoveOrganismFromCanvas(IOrganism organism)
