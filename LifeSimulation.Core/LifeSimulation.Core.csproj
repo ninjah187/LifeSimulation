@@ -48,6 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Brain\BrainMover.cs" />
+    <Compile Include="Brain\BrainOrganism.cs" />
+    <Compile Include="Brain\GoToAction.cs" />
+    <Compile Include="Brain\IBrainAction.cs" />
     <Compile Include="CircleHitBox.cs" />
     <Compile Include="CollidableGameObject.cs" />
     <Compile Include="CollisionEngine.cs" />
@@ -92,6 +96,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

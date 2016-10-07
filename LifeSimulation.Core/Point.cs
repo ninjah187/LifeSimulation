@@ -19,6 +19,22 @@ namespace LifeSimulation.Core
             Y = y;
         }
 
+        /// <summary>
+        /// Get normalized vector of direction from current point to destination.
+        /// </summary>
+        /// <param name="destination"></param>
+        /// <returns></returns>
+        public Vector GetDirectionTo(Point destination)
+        {
+            var direction = new Vector
+            {
+                X = this.X < destination.X ? 1 : this.X > destination.X ? -1 : 0,
+                Y = this.Y < destination.Y ? 1 : this.Y > destination.Y ? -1 : 0
+            };
+
+            return direction;
+        }
+
         public static Point operator +(Point point, Vector vector)
             => new Point
             {

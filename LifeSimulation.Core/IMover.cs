@@ -14,8 +14,9 @@ namespace LifeSimulation.Core
         int DirectionChangeStepsLimit { get; set; }
         
         void Move(IGameObject gameObject, params IGameObject[] objects);
+        void Move(IGameObject gameObject, Vector direction);
         void ChangeDirection(IGameObject gameObject, params IGameObject[] objects);
         void RollbackMove(IGameObject gameObject);
-        void MoveTo(IGameObject gameObject, Point position);
+        void PlaceIn(IGameObject gameObject, Point position);
     }
 }

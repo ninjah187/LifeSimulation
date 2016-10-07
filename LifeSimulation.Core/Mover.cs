@@ -24,10 +24,6 @@ namespace LifeSimulation.Core
 
         Point _oldPosition;
 
-        public Mover()
-        {
-        }
-
         public void Move(IGameObject gameObject, params IGameObject[] objects)
         {
             if (CurrentStep >= DirectionChangeStepsLimit)
@@ -39,10 +35,19 @@ namespace LifeSimulation.Core
 
             var newPosition = gameObject.Position + Direction;
 
-            MoveTo(gameObject, newPosition);
+            PlaceIn(gameObject, newPosition);
         }
 
-        public void MoveTo(IGameObject gameObject, Point position)
+        public void Move(IGameObject gameObject, Vector direction)
+        {
+            Direction = direction;
+
+            var newPosition = gameObject.Position + Direction;
+
+            PlaceIn(gameObject, newPosition);
+        }
+
+        public void PlaceIn(IGameObject gameObject, Point position)
         {
             _oldPosition = gameObject.Position;
             gameObject.Position = position;
@@ -51,7 +56,7 @@ namespace LifeSimulation.Core
 
         public void RollbackMove(IGameObject gameObject)
         {
-            MoveTo(gameObject, _oldPosition);
+            PlaceIn(gameObject, _oldPosition);
         }
 
         public virtual void ChangeDirection(IGameObject gameObject, params IGameObject[] objects)
