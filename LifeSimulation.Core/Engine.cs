@@ -10,20 +10,17 @@ namespace LifeSimulation.Core
     public class Engine : IEngine
     {
         static Random Random { get; } = new Random();
-
-        public Action<IGameObject> AddObjectToGameCanvas { get; set; }
-        public Action<IGameObject> RemoveObjectFromGameCanvas { get; set; }
-        public Action<IOrganism> AddOrganismToGameCanvas { get; set; }
-        public Action<IOrganism> RemoveOrganismFromGameCanvas { get; set; }
         
         List<IGameObject> _objects;
 
         IEnvironment _environment;
+        IView _view;
         ICollisionEngine _collisionEngine;
 
-        public Engine(IEnvironment environment)
+        public Engine(IEnvironment environment, IView view)
         {
             _environment = environment;
+            _view = view;
             _collisionEngine = new CollisionEngine(new MapCollisionDetector(_environment));
 
             _objects = new List<IGameObject>
@@ -77,7 +74,7 @@ namespace LifeSimulation.Core
         }
 
         public void Update()
-            {
+        {
             var dying = new List<IOrganism>();
             var vanishingFood = new List<IFood>();
 
@@ -102,13 +99,13 @@ namespace LifeSimulation.Core
             foreach (var organism in dying)
             {
                 _objects.Remove(organism);
-                RemoveOrganismFromGameCanvas(organism);
+                _view.RemoveObject(organism);
             }
 
             foreach (var food in vanishingFood)
             {
                 _objects.Remove(food);
-                RemoveObjectFromGameCanvas(food);
+                _view.RemoveObject(food);
             }
 
             var cloned = new List<IOrganism>();
@@ -116,7 +113,7 @@ namespace LifeSimulation.Core
             {
                 var clone = organism.Clone();
                 cloned.Add(clone);
-                AddObjectToGameCanvas(clone);
+                _view.AddObject(clone);
             }
 
             _objects.AddRange(cloned);
@@ -144,7 +141,7 @@ namespace LifeSimulation.Core
         {
             foreach (var obj in _objects)
             {
-                AddObjectToGameCanvas(obj);
+                _view.AddObject(obj);
             }
 
             int stepCount = 0;
@@ -154,7 +151,7 @@ namespace LifeSimulation.Core
                 if (stepCount >= 100)
                 {
                     var spawned = SpawnFood(10);
-                    spawned.ForEach(f => AddObjectToGameCanvas(f));
+                    spawned.ForEach(f => _view.AddObject(f));
                     stepCount = 0;
                 }
 

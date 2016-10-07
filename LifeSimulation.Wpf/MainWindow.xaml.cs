@@ -21,7 +21,7 @@ namespace LifeSimulation.Wpf
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IView
     {
         OrganismControlBaseFactory _organismControlFactory;
 
@@ -40,23 +40,7 @@ namespace LifeSimulation.Wpf
                     Height = GameCanvas.ActualHeight
                 };
 
-                var engine = new Engine(environment);
-                engine.AddObjectToGameCanvas = gameObject =>
-                {
-                    gameObject
-                        .When<IOrganism>(o => AddOrganismToCanvas(o))
-                        .BreakIfRecognized()
-                        .When<IFood>(f => AddFoodToCanvas(f));
-                };
-                engine.RemoveObjectFromGameCanvas = gameObject =>
-                {
-                    gameObject
-                        .When<IOrganism>(o => RemoveOrganismFromCanvas(o))
-                        .BreakIfRecognized()
-                        .When<IFood>(f => RemoveFoodFromCanvas(f));
-                };
-                engine.AddOrganismToGameCanvas = AddOrganismToCanvas;
-                engine.RemoveOrganismFromGameCanvas = RemoveOrganismFromCanvas;
+                var engine = new Engine(environment, this);
 
                 engine.RunAsync();
 
@@ -65,6 +49,22 @@ namespace LifeSimulation.Wpf
                 //    .SetSizeBinding(nameof(Environment.Width), this, WidthProperty)
                 //    .SetSizeBinding(nameof(Environment.Height), this, HeightProperty);
             };
+        }
+
+        public void AddObject(IGameObject gameObject)
+        {
+            gameObject
+                .When<IOrganism>(o => AddOrganismToCanvas(o))
+                .BreakIfRecognized()
+                .When<IFood>(f => AddFoodToCanvas(f));
+        }
+
+        public void RemoveObject(IGameObject gameObject)
+        {
+            gameObject
+                .When<IOrganism>(o => RemoveOrganismFromCanvas(o))
+                .BreakIfRecognized()
+                .When<IFood>(f => RemoveFoodFromCanvas(f));
         }
 
         public void AddOrganismToCanvas(IOrganism organism)

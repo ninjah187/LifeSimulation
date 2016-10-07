@@ -52,6 +52,8 @@
     <Compile Include="Brain\BrainOrganism.cs" />
     <Compile Include="Brain\GoToAction.cs" />
     <Compile Include="Brain\IBrainAction.cs" />
+    <Compile Include="Brain\TestEngine.cs" />
+    <Compile Include="Brain\WanderAction.cs" />
     <Compile Include="CircleHitBox.cs" />
     <Compile Include="CollidableGameObject.cs" />
     <Compile Include="CollisionEngine.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="IMovingGameObject.cs" />
     <Compile Include="IObstacleHitCollisionTestResult.cs" />
     <Compile Include="IOrganism.cs" />
+    <Compile Include="IView.cs" />
     <Compile Include="MapCollisionDetector.cs" />
     <Compile Include="MapExceededCollisionTestResult.cs" />
     <Compile Include="ObstacleHitCollisionTestResult.cs" />
